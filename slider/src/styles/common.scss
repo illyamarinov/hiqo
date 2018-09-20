@@ -1,0 +1,16 @@
+@import "./node_modules/reset-css/sass/_reset.scss";
+@import "./fonts.scss";
+
+body {
+  background-color: #4c657f;
+
+  main {
+    margin: 0 auto;
+    max-width: 1168px;
+  }
+
+  section {
+    margin: 0 auto;
+    width: 928px;
+  }
+}

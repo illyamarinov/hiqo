@@ -1,0 +1,33 @@
+@import "./common.scss";
+
+.blog-mag__slider {
+  background-color: #787878;
+  color: #ffffff;
+
+  &__content {
+    font-family: "Roboto";
+  }
+
+  &__title {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 46px;
+  }
+
+  &__preview {
+    font-style: normal;
+    font-weight: 100;
+    font-size: 14px;
+  }
+
+  &__button {
+    color: #ffffff;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid #ffffff;
+    border-radius: 3px;
+  }
+}
