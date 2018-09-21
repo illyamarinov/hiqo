@@ -1,0 +1,21 @@
+class Slide {
+  constructor(imgUrl, title, description = '') {
+    this.imgUrl = imgUrl;
+    this.title = title;
+    this.description = description;
+  }
+}
+
+const slides = [
+  new Slide('https://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg', 'Cat1', 'funny cats'),
+  new Slide('https://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg', 'Cat2'),
+  new Slide('https://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg', 'Cat3'),
+  new Slide('https://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg', 'Cat4'),
+  new Slide('https://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg', 'Cat5')
+];
+
+const getSlides = function() {
+  return Promise.resolve(slides);
+};
+
+export { getSlides };
