@@ -1,8 +1,6 @@
-@import "./node_modules/reset-css/sass/_reset.scss";
-@import "./fonts.scss";
-
 body {
-  background-color: #4c657f;
+  background-color: $color-bg-main;
+  font-family: $font-main;
 
   main {
     margin: 0 auto;
