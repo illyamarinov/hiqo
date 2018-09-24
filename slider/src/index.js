@@ -1,6 +1,6 @@
 import AwesomeSlider from './js/slider.js';
 import { getSlides } from './js/slider-service.js';
-import './styles/styles.scss';
+import './styles/main.scss';
 
 // init
 window.addEventListener('DOMContentLoaded', function() {
