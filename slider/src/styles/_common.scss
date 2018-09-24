@@ -4,11 +4,11 @@ body {
 
   main {
     margin: 0 auto;
-    max-width: 1168px;
+    max-width: $main-width;
   }
 
   section {
     margin: 0 auto;
-    width: 928px;
+    max-width: $section-width;
   }
 }

@@ -1,85 +1,114 @@
 import area from '../templates/area.hbs';
+import leftArrow from '../templates/left-arrow.hbs';
+import rightArrow from '../templates/right-arrow.hbs';
 import slide from '../templates/slide.hbs';
 import dots from '../templates/dots.hbs';
 
 class AwesomeSlider {
 
-    constructor(selector, slides) {
-        this.container = document.querySelector(selector);
-        this.selector = selector;
-        this.slides = slides;
-        this.slidesLength = slides.length;
-        this.currentSlide = {};
-        this.currentSlideIndex = 0;
-        this.sliderContentSelector = `${this.selector} .slider__content`;
-        this.sliderDotsSelector = `${this.selector} .slider__navigation__dots`;
+  constructor(selector, slides) {
+    this.container = document.querySelector(selector);
+    this.selector = selector;
+    this.slides = slides;
+    this.slidesLength = slides.length;
+    this.currentSlide = {};
+    this.currentSlideIndex = 0;
 
-        this.renderSlider();
-        this.setSlide(0);
+    this.sliderWrapperSelector = `${this.selector} .slider`;
+    this.sliderContentSelector = `${this.selector} .slider__content`;
+    this.sliderDotsSelector = `${this.selector} .slider__navigation__dots`;
+    this.sliderLeftArrowSelector = `${this.selector} .slider__navigation__arrow_left`;
+    this.sliderRightArrowSelector = `${this.selector} .slider__navigation__arrow_right`;
+
+    this.renderSlider();
+    this.setSlide(0);
+  }
+
+  setSlide(slideIndex) {
+
+    // validate slideIndex
+    if (slideIndex < 0 && slideIndex > this.slidesLength - 1) {
+        return;
+    }
+    this.currentSlide = this.slides[slideIndex];
+    this.currentSlideIndex = slideIndex;
+    this.renderSlide();
+  }
+
+  render(template, context = {}) {
+    return template(context);
+  }
+
+  renderSlider() {
+    this.renderArea();
+    this.renderArrows();
+    this.renderDots();
+  }
+
+  renderSlide() {
+    const slideContent = document.querySelector(this.sliderContentSelector);
+    const { imgUrl, ...context } = this.currentSlide;
+    slideContent.innerHTML = this.render(slide, context);
+  }
+
+  renderArea() {
+    this.container.innerHTML = this.render(area);
+  }
+
+  renderDots() {
+    const sliderWrapper = document.querySelector(this.sliderWrapperSelector);
+    let context = { dots: []};
+
+    for (let i = 0; i < this.slidesLength; i++) {
+      context.dots.push(i+1);
     }
 
-    setSlide(slideIndex) {
+    sliderWrapper.innerHTML += this.render(dots, context);
 
-        // validate slideIndex
-        if (slideIndex < 0 && slideIndex > this.slidesLength - 1) {
-            return;
-        }
-        this.currentSlide = this.slides[slideIndex];
-        this.currentSlideIndex = slideIndex;
-        this.renderSlide();
-    }
+    const sliderDots = document.querySelector(this.sliderDotsSelector);
+    sliderDots.addEventListener('click', function(event) {
+      if (event.target.className === 'dot') {
+        let slideIndex = event.target.dataset.index;
+        this.setSlide(slideIndex);
+        this.renderSlide(slideIndex);
+      }
 
-    render(template, context = {}) {
-        return template(context);
-    }
+    }.bind(this));
+  }
 
-    renderSlider() {
-        this.renderArea();
-        this.renderDots();
-        this.renderArrows();
-    }
+  // TODO: fix arrow wrong work 
 
-    renderSlide() {
-        const slideContent = document.querySelector(this.sliderContentSelector);
-        const { imgUrl, ...context } = this.currentSlide;
-        slideContent.innerHTML = this.render(slide, context);
-    }
+  renderArrows() {
+    this.renderLeftArrow();
+    this.renderRightArrow();
+  }
 
-    renderArea() {
-        this.container.innerHTML = this.render(area);
-    }
+  renderLeftArrow() {
+    const sliderWrapper = document.querySelector(this.sliderWrapperSelector);
+    sliderWrapper.innerHTML += this.render(leftArrow);
+    console.log(sliderWrapper);
+    const leftButton = document.querySelector('.slider__navigation__arrow_left');
+    console.log(leftButton)
+    leftButton.addEventListener('click', function(event) {
+      let slideIndex = (this.currentSlideIndex + this.slidesLength - 1) % this.slidesLength;
+      this.setSlide(slideIndex);
+      this.renderSlide(slideIndex);
+    }.bind(this));
 
-    renderDots() {
-        const sliderDots = document.querySelector(this.sliderDotsSelector);
-        let context = [];
+  }
 
-        for (let i = 0; i < this.slidesLength; i++) {
-            context.push({});
-        }
+  renderRightArrow() {
+    const sliderWrapper = document.querySelector(this.sliderWrapperSelector);
+    sliderWrapper.innerHTML += this.render(rightArrow);
 
-        sliderDots.innerHTML = this.render(dots, context);
-
-        sliderDots.addEventListener('click', function (event) {
-            let slideIndex = event.target.dataset.index;
-            this.setSlide(slideIndex);
-            this.renderSlide(slideIndex);
-        });
-    }
-
-    renderArrows() {
-        //
-
-        // leftButton.addEventListener('click', function(event) {
-        //     let slideIndex = (this.currentSlideIndex + this.slidesLength - 1) % this.slidesLength;
-        //     setSlide(slideIndex);
-        //     renderSlide(slideIndex);
-        // });
-        // rightButton.addEventListener('click', function(event) {
-        //     let slideIndex = (this.currentSlideIndex + 1) % this.slidesLength;
-        //     setSlide(slideIndex);
-        //     renderSlide(slideIndex);
-        // });
-    }
+    const rightButton = document.querySelector('.slider__navigation__arrow_right');
+    console.log(rightButton);
+    rightButton.addEventListener('click', function(event) {
+      let slideIndex = (this.currentSlideIndex + 1) % this.slidesLength;
+      this.setSlide(slideIndex);
+      this.renderSlide(slideIndex);
+    }.bind(this));
+  }
 
 }
 
