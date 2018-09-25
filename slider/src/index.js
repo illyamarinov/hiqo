@@ -1,14 +1,22 @@
 import AwesomeSlider from './js/slider.js';
-import { getSlides } from './js/slider-service.js';
+import { getPeople, getPlanets } from './js/slider-service.js';
 import './styles/main.scss';
 
 // init
 window.addEventListener('DOMContentLoaded', function() {
 
-  getSlides().then(function(slides) {
-    const slider1 = new AwesomeSlider('#slider1', slides);
-    const slider2 = new AwesomeSlider('#slider2', slides);
-    slider2.setSlide(1);
-  });
+  getPlanets().then(function(data) {
+      return JSON.parse(data)
+    })
+    .then(function(data) {
+      const slider1 = new AwesomeSlider('#slider1', data.results);
+    });
+
+  getPeople().then(function(data) {
+      return JSON.parse(data)
+    })
+    .then(function(data) {
+      const slider2 = new AwesomeSlider('#slider2', data.results);
+    });
 
 }, true);

@@ -47,7 +47,7 @@ class AwesomeSlider {
 
   renderSlide() {
     const slideContent = document.querySelector(this.sliderContentSelector);
-    const { imgUrl, ...context } = this.currentSlide;
+    // const { imgUrl, ...context } = this.currentSlide;
     slideContent.innerHTML = this.render(slide, this.currentSlide);
   }
 
@@ -66,6 +66,8 @@ class AwesomeSlider {
     sliderWrapper.insertAdjacentHTML('beforeEnd', this.render(dots, context));
 
     const sliderDots = document.querySelector(this.sliderDotsSelector);
+    this.dotsClickHandler();
+
     sliderDots.addEventListener('click', (event) => {
       if (event.target.className === 'dot') {
         const slideIndex = event.target.dataset.index;
@@ -73,6 +75,12 @@ class AwesomeSlider {
         this.renderSlide(slideIndex);
       }
     });
+  }
+
+  // change active dots class
+  dotsClickHandler() {
+    const dotsArr = document.querySelectorAll(`${this.selector} .dot`);
+    console.log(dotsArr, this.currentSlideIndex);
   }
 
   renderArrows() {

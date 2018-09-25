@@ -1,42 +1,44 @@
 import { Slide } from './models';
 
-// const slides = [
-//   new Slide('https://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg', 'Cat1', 'funny cats'),
-//   new Slide('https://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg', 'Cat2'),
-//   new Slide('https://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg', 'Cat3'),
-//   new Slide('https://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg', 'Cat4'),
-//   new Slide('https://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg', 'Cat5')
-// ];
+const baseUrl = 'https://swapi.co/api';
+const planetsUrl = `${baseUrl}/planets`;
+const peopleUrl = `${baseUrl}/people`;
 
-const getSlides = function() {
-  // TODO: get planets from API
+const get = function(url) {
   return new Promise(function(resolve, reject) {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://swapi.co/api/planets');
+    xhr.open('GET', url);
 
     xhr.onload = function() {
       if (this.status >= 200 && this.status < 300) {
         resolve(this.responseText);
       } else {
+        const { status, statusText, responseText } = this.status;
         reject({
-          status: this.status,
-          statusText: this.statusText,
-          responseText: this.responseText
+          status,
+          statusText,
+          responseText
         });
       }
     };
 
-    xhr.onerror = function () {
+    xhr.onerror = function() {
       reject({
         status: this.status,
         statusText: this.statusText
       });
     };
 
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-    xhr.send(body);
+    xhr.send();
   });
 };
 
-export { getSlides };
+const getPlanets = function() {
+  return get(planetsUrl);
+};
+
+const getPeople = function() {
+  return get(peopleUrl);
+};
+
+export { getPeople, getPlanets };

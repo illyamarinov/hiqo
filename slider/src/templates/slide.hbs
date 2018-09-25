@@ -1,4 +1,10 @@
-<h1 class="slider__content__title">Planet Name: {{title}}</h1>
-<p class="slider__content__preview">Population: {{description}}</p>
-<p class="slider__content__preview">Climate: {{description}}</p>
+<h1 class="slider__content__title">Planet Name: {{name}}</h1>
+{{#if population}}
+<p class="slider__content__preview">Population: {{population}}</p>
+<p class="slider__content__preview">Climate: {{climate}}</p>
+{{/if}}
+{{#if gender}}
+<p class="slider__content__preview">Gender: {{gender}}</p>
+<p class="slider__content__preview">Height: {{height}}</p>
+{{/if}}
 <!-- <img class="slider__content__image" src="{{imgUrl}}" alt="{{description}}" /> -->
