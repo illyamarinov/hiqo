@@ -2,29 +2,99 @@
 .slider {
   background-color: $color-bg-slider;
   color: $color-text-main;
-  // height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  margin: 15px 0;
 
   &__content {
+    padding: 48px 60px;
+    position: relative;
 
     &__title {
       font-style: normal;
       font-weight: 300;
       font-size: $font-size-title;
+      line-height: 76px;
     }
 
     &__preview {
       font-style: normal;
       font-weight: 100;
       font-size: $font-size-preview;
+      line-height: 24px;
+    }
+
+    &__image {
+      position: absolute;
+      top: 0;
+      left: 0;
     }
   }
 
   &__navigation {
 
+    &__arrow {
+
+      &_left {
+        padding: 20px 11px;
+        background: $color-text-main;
+        color: $color-arrows;
+        border-radius: 10%;
+        font-size: 14px;
+        position: absolute;
+        left: 0;
+        bottom: 50%;
+
+        &::before {
+          display: block;
+          content: "";
+          width: 13px;
+          height: 13px;
+          border-bottom: 2px solid;
+          border-left: 2px solid;
+          transform: rotate(45deg);
+        }
+
+        &:hover {
+          cursor: pointer;
+          background: $color-text-main-hover;
+        }
+      }
+
+      &_right {
+        padding: 20px 11px;
+        background: $color-text-main;
+        color: $color-arrows;
+        border-radius: 10%;
+        font-size: 14px;
+        position: absolute;
+        right: 0;
+        bottom: 50%;
+
+        &::before {
+          display: block;
+          content: "";
+          width: 13px;
+          height: 13px;
+          border-bottom: 2px solid;
+          border-left: 2px solid;
+          transform: rotate(-135deg);
+        }
+
+        &:hover {
+          cursor: pointer;
+          background: $color-text-main-hover;
+        }
+      }
+    }
+
     &__dots {
       display: flex;
       justify-content: center;
-      width: 100%;
+      padding-bottom: 60px;
 
       & .dot {
         border: 1px solid $color-text-main;

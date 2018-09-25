@@ -1,12 +1,9 @@
 body {
   background-color: $color-bg-main;
   font-family: $font-main;
-
-  main {
-    margin: 0 auto;
-    max-width: $main-width;
-  }
-
+  margin: 0 auto;
+  max-width: $main-width;
+  
   section {
     margin: 0 auto;
     max-width: $section-width;

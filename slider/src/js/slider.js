@@ -1,4 +1,4 @@
-import area from '../templates/area.hbs';
+import wrapper from '../templates/wrapper.hbs';
 import leftArrow from '../templates/left-arrow.hbs';
 import rightArrow from '../templates/right-arrow.hbs';
 import slide from '../templates/slide.hbs';
@@ -40,7 +40,7 @@ class AwesomeSlider {
   }
 
   renderSlider() {
-    this.renderArea();
+    this.renderWrapper();
     this.renderArrows();
     this.renderDots();
   }
@@ -48,11 +48,11 @@ class AwesomeSlider {
   renderSlide() {
     const slideContent = document.querySelector(this.sliderContentSelector);
     const { imgUrl, ...context } = this.currentSlide;
-    slideContent.innerHTML = this.render(slide, context);
+    slideContent.innerHTML = this.render(slide, this.currentSlide);
   }
 
-  renderArea() {
-    this.container.innerHTML = this.render(area);
+  renderWrapper() {
+    this.container.innerHTML = this.render(wrapper);
   }
 
   renderDots() {
@@ -60,23 +60,20 @@ class AwesomeSlider {
     let context = { dots: []};
 
     for (let i = 0; i < this.slidesLength; i++) {
-      context.dots.push(i+1);
+      context.dots.push(i + 1);
     }
 
-    sliderWrapper.innerHTML += this.render(dots, context);
+    sliderWrapper.insertAdjacentHTML('beforeEnd', this.render(dots, context));
 
     const sliderDots = document.querySelector(this.sliderDotsSelector);
-    sliderDots.addEventListener('click', function(event) {
+    sliderDots.addEventListener('click', (event) => {
       if (event.target.className === 'dot') {
-        let slideIndex = event.target.dataset.index;
+        const slideIndex = event.target.dataset.index;
         this.setSlide(slideIndex);
         this.renderSlide(slideIndex);
       }
-
-    }.bind(this));
+    });
   }
-
-  // TODO: fix arrow wrong work 
 
   renderArrows() {
     this.renderLeftArrow();
@@ -85,29 +82,26 @@ class AwesomeSlider {
 
   renderLeftArrow() {
     const sliderWrapper = document.querySelector(this.sliderWrapperSelector);
-    sliderWrapper.innerHTML += this.render(leftArrow);
-    console.log(sliderWrapper);
-    const leftButton = document.querySelector('.slider__navigation__arrow_left');
-    console.log(leftButton)
-    leftButton.addEventListener('click', function(event) {
-      let slideIndex = (this.currentSlideIndex + this.slidesLength - 1) % this.slidesLength;
-      this.setSlide(slideIndex);
-      this.renderSlide(slideIndex);
-    }.bind(this));
+    sliderWrapper.insertAdjacentHTML('beforeEnd', this.render(leftArrow));
 
+    const leftButton = document.querySelector(this.sliderLeftArrowSelector);
+    leftButton.addEventListener('click', this.arrowClickHandler.bind(this));
   }
 
   renderRightArrow() {
     const sliderWrapper = document.querySelector(this.sliderWrapperSelector);
-    sliderWrapper.innerHTML += this.render(rightArrow);
+    sliderWrapper.insertAdjacentHTML('beforeEnd', this.render(rightArrow));
 
-    const rightButton = document.querySelector('.slider__navigation__arrow_right');
-    console.log(rightButton);
-    rightButton.addEventListener('click', function(event) {
-      let slideIndex = (this.currentSlideIndex + 1) % this.slidesLength;
-      this.setSlide(slideIndex);
-      this.renderSlide(slideIndex);
-    }.bind(this));
+    const rightButton = document.querySelector(this.sliderRightArrowSelector);
+    rightButton.addEventListener('click', this.arrowClickHandler.bind(this));
+  }
+
+  arrowClickHandler(event) {
+    const direction = event.target.dataset.direction === 'left' ? -1 : 1;
+    const slideIndex = (this.currentSlideIndex + this.slidesLength + direction) % this.slidesLength;
+
+    this.setSlide(slideIndex);
+    this.renderSlide(slideIndex);
   }
 
 }
