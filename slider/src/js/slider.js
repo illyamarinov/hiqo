@@ -7,6 +7,7 @@ import { CONSTANTS } from './constants.js';
 
 class AwesomeSlider {
 
+  // AwesomeSlider's initing
   constructor(selector, slides) {
     this.container = document.querySelector(selector);
     this.selector = selector;
@@ -24,40 +25,49 @@ class AwesomeSlider {
     this.sliderRightArrowSelector = `${this.selector} ${this.CLASSES.ARROW_RIGHT}`;
 
     this.renderSlider();
-    this.setSlide(0);
   }
 
-  setSlide(slideIndex) {
+  // set specific slide
+  setSlide(next) {
 
     // validate slideIndex
-    if (slideIndex < 0 && slideIndex > this.slidesLength - 1) {
-        return;
+    if (next < 0 && next > this.slidesLength - 1) {
+      return;
     }
-    this.currentSlide = this.slides[slideIndex];
-    this.currentSlideIndex = slideIndex;
+    const previous = this.currentSlideIndex;
+    this.currentSlide = this.slides[next];
+    this.currentSlideIndex = next;
+    this.dotsClassHandler(previous, next);
     this.renderSlide();
   }
 
+  // rendering template with/without specific context
   render(template, context = {}) {
     return template(context);
   }
 
+  // сalling the methods of the components of the slider, and set first slide
   renderSlider() {
     this.renderWrapper();
-    this.renderArrows();
+    this.renderLeftArrow();
+    this.renderRightArrow();
     this.renderDots();
+    this.setSlide(0);
   }
 
+  // render specific slide
   renderSlide() {
     const slideContent = document.querySelector(this.sliderContentSelector);
     // const { imgUrl, ...context } = this.currentSlide;
     slideContent.innerHTML = this.render(slide, this.currentSlide);
   }
 
+  // render wrapper for slider
   renderWrapper() {
     this.container.innerHTML = this.render(wrapper);
   }
 
+  // render navigation dots for slider
   renderDots() {
     const sliderWrapper = document.querySelector(this.sliderWrapperSelector);
     const context = { dots: [] };
@@ -79,10 +89,7 @@ class AwesomeSlider {
     sliderDots.addEventListener('click', (event) => {
       if (event.target.className.indexOf(this.SELECTORS.WRAPPER_DOTS) === -1 && event.target.className.indexOf(this.SELECTORS.SINGLE_DOT) !== -1) {
         const slideIndex = +event.target.dataset.index;
-        const previousSlide = this.currentSlideIndex;
         this.setSlide(slideIndex);
-        const nextSlide = this.currentSlideIndex;
-        this.dotsClassHandler(previousSlide, nextSlide);
       }
     });
   }
@@ -94,11 +101,7 @@ class AwesomeSlider {
     dotsArr[next].classList.add(this.SELECTORS.ACTIVE_DOT);
   }
 
-  renderArrows() {
-    this.renderLeftArrow();
-    this.renderRightArrow();
-  }
-
+  // render left arrow for slider
   renderLeftArrow() {
     const sliderWrapper = document.querySelector(this.sliderWrapperSelector);
     sliderWrapper.insertAdjacentHTML('beforeEnd', this.render(leftArrow));
@@ -107,6 +110,7 @@ class AwesomeSlider {
     leftButton.addEventListener('click', this.arrowClickHandler.bind(this));
   }
 
+  // render right arrow for slider
   renderRightArrow() {
     const sliderWrapper = document.querySelector(this.sliderWrapperSelector);
     sliderWrapper.insertAdjacentHTML('beforeEnd', this.render(rightArrow));
@@ -115,15 +119,12 @@ class AwesomeSlider {
     rightButton.addEventListener('click', this.arrowClickHandler.bind(this));
   }
 
+  // handler for arrows, that allows to change slides
   arrowClickHandler(event) {
     const direction = event.target.dataset.direction === 'left' ? -1 : 1;
     const slideIndex = (this.currentSlideIndex + this.slidesLength + direction) % this.slidesLength;
-    const previousSlide = this.currentSlideIndex;
     this.setSlide(slideIndex);
-    const nextSlide = this.currentSlideIndex;
-    this.dotsClassHandler(previousSlide, nextSlide);
   }
-
 }
 
 export default AwesomeSlider;
