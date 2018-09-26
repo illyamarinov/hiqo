@@ -15,6 +15,7 @@ class AwesomeSlider {
     this.slidesLength = slides.length;
     this.currentSlide = {};
     this.currentSlideIndex = 0;
+    this.init = true;
 
     this.CLASSES = CONSTANTS.CLASSES;
     this.SELECTORS = CONSTANTS.SELECTORS;
@@ -35,10 +36,11 @@ class AwesomeSlider {
       return;
     }
     const previous = this.currentSlideIndex;
+    const direction = previous - next > 0 ? 'left' : 'right';
     this.currentSlide = this.slides[next];
     this.currentSlideIndex = next;
     this.dotsClassHandler(previous, next);
-    this.renderSlide();
+    this.renderSlide(direction);
   }
 
   // rendering template with/without specific context
@@ -56,10 +58,26 @@ class AwesomeSlider {
   }
 
   // render specific slide
-  renderSlide() {
+  renderSlide(direction) {
+    const slideWrapper = document.querySelector(this.sliderWrapperSelector);
     const slideContent = document.querySelector(this.sliderContentSelector);
     // const { imgUrl, ...context } = this.currentSlide;
-    slideContent.innerHTML = this.render(slide, this.currentSlide);
+    if (this.init) {
+      slideWrapper.insertAdjacentHTML('afterBegin', this.render(slide, this.currentSlide));
+      this.init = false;
+      return;
+    }
+
+    if (direction === 'right') {
+      slideContent.classList.add('slider__content_left')
+      slideContent.insertAdjacentHTML('afterEnd', this.render(slide, this.currentSlide));
+      const left = document.querySelector('[class *= "slider__content_left"]');
+      slideWrapper.removeChild(left);
+
+    } else {
+      slideContent.insertAdjacentHTML('beforeBegin', this.render(slide, this.currentSlide));
+    }
+
   }
 
   // render wrapper for slider
@@ -108,6 +126,7 @@ class AwesomeSlider {
 
     const leftButton = document.querySelector(this.sliderLeftArrowSelector);
     leftButton.addEventListener('click', this.arrowClickHandler.bind(this));
+
   }
 
   // render right arrow for slider
@@ -124,6 +143,10 @@ class AwesomeSlider {
     const direction = event.target.dataset.direction === 'left' ? -1 : 1;
     const slideIndex = (this.currentSlideIndex + this.slidesLength + direction) % this.slidesLength;
     this.setSlide(slideIndex);
+  }
+
+  animation() {
+
   }
 }
 

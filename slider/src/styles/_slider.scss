@@ -2,35 +2,49 @@
 .slider {
   background-color: $color-bg-slider;
   color: $color-text-main;
-  // height: 100vh;
+  min-height: 450px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
   margin: 15px 0;
+  overflow: hidden;
 
   &__content {
     padding: 48px 60px;
     position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
     &__title {
+      position: relative;
       font-style: normal;
       font-weight: 300;
       font-size: $font-size-title;
       line-height: 76px;
+      z-index: 10;
     }
 
     &__preview {
+      position: relative;
       font-style: normal;
       font-weight: 100;
       font-size: $font-size-preview;
       line-height: 24px;
+      z-index: 10;
     }
 
     &__image {
       position: absolute;
       top: 0;
       left: 0;
+      object-fit: cover;
+      max-height: 450px;
+      width: 100%;
+      opacity: .99;
+      z-index: 1;
     }
   }
 
@@ -47,6 +61,7 @@
         position: absolute;
         left: 0;
         bottom: 40%;
+        z-index: 10;
 
         &::before {
           display: block;
@@ -73,6 +88,7 @@
         position: absolute;
         right: 0;
         bottom: 40%;
+        z-index: 10;
 
         &::before {
           display: block;
@@ -100,6 +116,7 @@
       bottom: 0;
       right: 0;
       left: 0;
+      z-index: 10;
 
       & .dot {
         border: 1px solid $color-text-main;
