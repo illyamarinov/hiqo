@@ -1,5 +1,5 @@
 <div class="slider__navigation__dots">
   {{#each dots}}
-    <span class="dot" data-index="{{@index}}"></span>
+    <span class="dot{{#if active}} dot_active{{/if}}" data-index="{{@index}}"></span>
   {{/each}}
 </div>

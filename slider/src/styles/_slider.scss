@@ -46,7 +46,7 @@
         font-size: 14px;
         position: absolute;
         left: 0;
-        bottom: 50%;
+        bottom: 40%;
 
         &::before {
           display: block;
@@ -72,7 +72,7 @@
         font-size: 14px;
         position: absolute;
         right: 0;
-        bottom: 50%;
+        bottom: 40%;
 
         &::before {
           display: block;
@@ -94,7 +94,12 @@
     &__dots {
       display: flex;
       justify-content: center;
-      padding-bottom: 60px;
+      padding-bottom: 20px;
+      position: absolute;
+      margin: 0 auto;
+      bottom: 0;
+      right: 0;
+      left: 0;
 
       & .dot {
         border: 1px solid $color-text-main;
@@ -102,6 +107,10 @@
         height: 15px;
         margin: 0 8px;
         width: 15px;
+
+        &_active {
+          background: $color-text-main;
+        }
 
         &:hover {
           background: $color-text-main;
