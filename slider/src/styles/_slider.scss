@@ -1,3 +1,13 @@
+@keyframes toLeft {
+  from {
+    left: 0;
+  }
+
+  to {
+    left: -100%;
+  }
+}
+
 // Slider
 .slider {
   background-color: $color-bg-slider;
@@ -11,12 +21,28 @@
   overflow: hidden;
 
   &__content {
+    display: none;
     padding: 48px 60px;
     position: relative;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    transition: 1s ease-in-out;
+
+    &_active {
+      display: block;
+    }
+
+    &_to-left {
+      // left: -100%;
+      animation-duration: 1s;
+      animation-name: toLeft;
+    }
+
+    &_to-right {
+      left: 100%;
+    }
 
     &__title {
       position: relative;

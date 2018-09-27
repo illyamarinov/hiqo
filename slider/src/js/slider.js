@@ -15,6 +15,8 @@ class AwesomeSlider {
     this.slidesLength = slides.length;
     this.currentSlide = {};
     this.currentSlideIndex = 0;
+    this.previousSlideIndex = this.slides.length - 1;
+    this.nextSlideIndex = this.currentSlideIndex + 1;
     this.init = true;
 
     this.CLASSES = CONSTANTS.CLASSES;
@@ -29,17 +31,17 @@ class AwesomeSlider {
   }
 
   // set specific slide
-  setSlide(next) {
+  setSlide(nextIndex) {
 
     // validate slideIndex
-    if (next < 0 && next > this.slidesLength - 1) {
+    if (nextIndex < 0 && nextIndex > this.slidesLength - 1) {
       return;
     }
-    const previous = this.currentSlideIndex;
-    const direction = previous - next > 0 ? 'left' : 'right';
-    this.currentSlide = this.slides[next];
-    this.currentSlideIndex = next;
-    this.dotsClassHandler(previous, next);
+    const previousIndex = this.currentSlideIndex;
+    const direction = previousIndex - nextIndex > 0 ? 'left' : 'right';
+    this.currentSlide = this.slides[nextIndex];
+    this.currentSlideIndex = nextIndex;
+    this.dotsClassHandler(previousIndex, nextIndex);
     this.renderSlide(direction);
   }
 
@@ -60,22 +62,48 @@ class AwesomeSlider {
   // render specific slide
   renderSlide(direction) {
     const slideWrapper = document.querySelector(this.sliderWrapperSelector);
-    const slideContent = document.querySelector(this.sliderContentSelector);
+
     // const { imgUrl, ...context } = this.currentSlide;
     if (this.init) {
+      // render next slide
+      slideWrapper.insertAdjacentHTML('afterBegin', this.render(slide));
+
+      // render current slide and add class acitve
       slideWrapper.insertAdjacentHTML('afterBegin', this.render(slide, this.currentSlide));
+      const slideContent = document.querySelector(this.sliderContentSelector);
+      slideContent.classList.add('slider__content_active');
+
+      // render previous slide
+      slideWrapper.insertAdjacentHTML('afterBegin', this.render(slide));
       this.init = false;
       return;
     }
 
+    const slidesArray = document.querySelectorAll(this.sliderContentSelector);
+    slidesArray[1].addEventListener('animationend', function() {
+      slidesArray[1].classList.remove('slider__content_active');
+      slidesArray[1].classList.remove('slider__content_to-left');
+    });
+    console.log(slidesArray);
     if (direction === 'right') {
-      slideContent.classList.add('slider__content_left')
-      slideContent.insertAdjacentHTML('afterEnd', this.render(slide, this.currentSlide));
-      const left = document.querySelector('[class *= "slider__content_left"]');
-      slideWrapper.removeChild(left);
+      slidesArray[1].classList.add('slider__content_to-left');
 
+      // slidesArray[2].classList.add('slider__content_to-left');
+      // console.log(slidesArray[2]);
+      // let nextSlide = {};
+      // nextSlide.innerHTML = this.render(slide, this.currentSlide);
+      // console.log(nextSlide);
+      // slidesArray[2].replaceChild(this.render(slide, this.currentSlide), slidesArray[2]);
+      // console.log(slidesArray);
+      // // slideContent.insertAdjacentHTML('afterEnd', this.render(slide, this.currentSlide));
+      // const toLeft = document.querySelector('[class*="slider__content_to-left"]');
+      // slideWrapper.removeChild(toLeft);
     } else {
-      slideContent.insertAdjacentHTML('beforeBegin', this.render(slide, this.currentSlide));
+      slidesArray[1].classList.add('slider__content_to-right');
+      // slideContent.classList.add('slider__content_to-right');
+      // slideContent.insertAdjacentHTML('beforeBegin', this.render(slide, this.currentSlide));
+      // const toRight = document.querySelector('[class*="slider__content_to-right"]');
+      // slideWrapper.removeChild(toRight);
     }
 
   }
